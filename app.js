@@ -45,9 +45,9 @@ const deleteCompaniesByID = (req, res) => {
 //routes
 app.route("/api/v1/companies/list").get(getCompaniesList)
 app.route("/api/v1/companies/:id").get(getCompaniesByID)
-app.route("/api/v1/companies/create").get(createCompanies)
-app.route("/api/v1/companies/edit/:id").get(editCompaniesByID)
-app.route("/api/v1/companies/delete/:id").get(deleteCompaniesByID)
+app.route("/api/v1/companies/create").post(createCompanies)
+app.route("/api/v1/companies/edit/:id").put(editCompaniesByID)
+app.route("/api/v1/companies/delete/:id").delete(deleteCompaniesByID)
 
 app.listen(app.get("port"), () => {
     console.log(`Listening to port ${app.get("port")}..`)
