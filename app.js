@@ -20,13 +20,34 @@ let companies = [
     },
 ]
 
+//TODO: dont forget to use joi validation
 //methods
 const getCompaniesList = (req, res) => {
-    res.status(200).json(JSON.parse(JSON.stringify(companies)))
+    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+}
+
+const getCompaniesByID = (req, res) => {
+    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+}
+
+const createCompanies = (req, res) => {
+    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+}
+
+const editCompaniesByID = (req, res) => {
+    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+}
+
+const deleteCompaniesByID = (req, res) => {
+    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
 }
 
 //routes
 app.route("/api/v1/companies/list").get(getCompaniesList)
+app.route("/api/v1/companies/:id").get(getCompaniesByID)
+app.route("/api/v1/companies/create").get(createCompanies)
+app.route("/api/v1/companies/edit/:id").get(editCompaniesByID)
+app.route("/api/v1/companies/delete/:id").get(deleteCompaniesByID)
 
 app.listen(app.get("port"), () => {
     console.log(`Listening to port ${app.get("port")}..`)
