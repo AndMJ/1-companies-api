@@ -20,26 +20,69 @@ let companies = [
     },
 ]
 
+//find company
+const findCompany = async (key, value) => {
+    return companies.find((company) => company[key] === value)
+}
+
 //TODO: dont forget to use joi validation
 //methods
-const getCompaniesList = (req, res) => {
+const getCompaniesList = async (req, res) => {
     return res.status(200).json(JSON.parse(JSON.stringify(companies)))
 }
 
-const getCompaniesByID = (req, res) => {
-    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+const getCompaniesByID = async (req, res) => {
+    const found = await findCompany("id", req.params.id)
+    if (!found){
+        return res.status(404).json({"code": 404, "message": "Company not found."})
+    }
+    return res.status(200).json(JSON.parse(JSON.stringify(found)))
 }
 
-const createCompanies = (req, res) => {
-    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+const createCompanies = async (req, res) => {
+    const newCompany = {
+        id: crypto.randomUUID(),
+        name: req.body.name,
+        industry: req.body.industry
+    }
+
+    const found = await findCompany("name", req.body.name)
+    if (found){
+        return res.status(404).json({"code": 404, "message": "Company already exists."})
+    }
+
+    companies.push(newCompany)
+
+    return res.status(200).json(JSON.parse(JSON.stringify(newCompany)))
 }
 
-const editCompaniesByID = (req, res) => {
-    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+const editCompaniesByID = async (req, res) => {
+    const editCompany = {
+        id: req.params.id,
+        name: req.body.name,
+        industry: req.body.industry
+    }
+
+    const found = await findCompany("id", editCompany.id)
+    if (!found){
+        return res.status(404).json({"code": 404, "message": "Company not found."})
+    }
+
+    found.name = editCompany.name
+    found.industry = editCompany.industry
+
+    return res.status(200).json(JSON.parse(JSON.stringify(found)))
 }
 
-const deleteCompaniesByID = (req, res) => {
-    return res.status(200).json(JSON.parse(JSON.stringify(companies)))
+const deleteCompaniesByID = async (req, res) => {
+    const found = await findCompany("id", req.params.id)
+    if (!found){
+        return res.status(404).json({"code": 404, "message": "Company doesnt exist."})
+    }
+
+    companies = companies.filter(company => company.id !== req.params.id)
+
+    return res.status(200).json({"code": 200, "message": "Company deleted."})
 }
 
 //routes
